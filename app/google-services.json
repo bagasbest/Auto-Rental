@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "516927449189",
+    "project_id": "auto-rental",
+    "storage_bucket": "auto-rental.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:516927449189:android:b0582256a66fe36403be8c",
+        "android_client_info": {
+          "package_name": "com.project.autorental"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "516927449189-to537n822f20eupavm6cfbjjhnu5cmmk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvQidqtFGFjBpjyDrzfE9geR87_Ku95Go"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "516927449189-to537n822f20eupavm6cfbjjhnu5cmmk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

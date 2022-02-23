@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_car_rental">
+
+    <fragment
+        android:id="@+id/navigation_car_rental"
+        android:name="com.project.autorental.car_rental.CarRentalFragment"
+        android:label="Car Rental"
+        tools:layout="@layout/fragment_car_rental" />
+
+    <fragment
+        android:id="@+id/navigation_transaction"
+        android:name="com.project.autorental.transaction.TransactionFragment"
+        android:label="Transaction"
+        tools:layout="@layout/fragment_transaction" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.project.autorental.profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+</navigation>

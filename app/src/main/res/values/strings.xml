@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Auto Rental</string>
+    <string name="image">image</string>
+
+    <string-array name="filter">
+        <item>Filter by Lower Price</item>
+        <item>Filter by Higher Price</item>
+    </string-array>
+
+    <string-array name="status">
+        <item>Not Paid</item>
+        <item>Paid</item>
+    </string-array>
+
+</resources>
