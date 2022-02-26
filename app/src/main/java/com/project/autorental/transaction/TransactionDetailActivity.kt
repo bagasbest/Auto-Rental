@@ -34,10 +34,11 @@ class TransactionDetailActivity : AppCompatActivity() {
         setContentView(binding?.root)
         val formatter = DecimalFormat("#,###")
 
-        checkRole()
+
 
         model = intent.getParcelableExtra(EXTRA_TRANSACTION)
 
+        checkRole()
         Glide.with(this)
             .load(model?.carImage)
             .into(binding!!.image)
@@ -45,22 +46,21 @@ class TransactionDetailActivity : AppCompatActivity() {
         binding?.carName?.text = "Car Name: ${model?.carName}"
         binding?.carType?.text = "Car Type: ${model?.carType}"
         binding?.customerName?.text = "Customer Name: ${model?.customerName}"
-        binding?.customerNik?.text = "Car Name: ${model?.customerNIK}"
         binding?.dateStart?.text = "Start Date: ${model?.dateStart}"
         binding?.dateFinish?.text = "Finish Date: ${model?.dateFinish}"
         binding?.duration?.text = "Duration: ${model?.duration}"
         binding?.pickHour?.text = "Pick Hour: ${model?.pickHour}"
         binding?.status?.text = "Status: ${model?.status}"
-        binding?.finalPrice?.text = "Final Price: ${formatter.format(model?.finalPrice)}"
+        binding?.finalPrice?.text = "Final Price: RM ${formatter.format(model?.finalPrice)}"
 
         if(model?.status == "Paid") {
             binding?.status?.setTextColor(ContextCompat.getColor(this, android.R.color.holo_green_dark))
+            binding?.textView11?.visibility = View.VISIBLE
             Glide.with(this)
                 .load(model?.paymentProof)
                 .into(binding!!.ArticleDp)
         } else {
             binding?.status?.setTextColor(ContextCompat.getColor(this, android.R.color.holo_red_dark))
-            binding?.imageHint?.visibility = View.VISIBLE
             if(model?.paymentProof != "") {
                 Glide.with(this)
                     .load(model?.paymentProof)
@@ -83,7 +83,43 @@ class TransactionDetailActivity : AppCompatActivity() {
             accDialog()
         }
 
+        binding?.decline?.setOnClickListener {
+            decDialog()
+        }
 
+
+    }
+
+    private fun decDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Confirm Payment Proof")
+            .setMessage("Are you sure want to Decline this payment proof ?")
+            .setIcon(R.drawable.ic_baseline_warning_24)
+            .setPositiveButton("YES") { dialogInterface, _ ->
+                dialogInterface.dismiss()
+                declineTransaction()
+            }
+            .setNegativeButton("NO") { dialog, _ -> dialog.dismiss() }
+            .show()
+    }
+
+    private fun declineTransaction() {
+        model?.transactionId?.let {
+            FirebaseFirestore
+                .getInstance()
+                .collection("transaction")
+                .document(it)
+                .delete()
+                .addOnCompleteListener { task ->
+                    if(task.isSuccessful) {
+                        Toast.makeText(this, "Successfully Decline Payment Proof", Toast.LENGTH_SHORT).show()
+                        binding?.acc?.visibility = View.GONE
+                        binding?.decline?.visibility = View.GONE
+                    } else {
+                        Toast.makeText(this, "Failure Decline Payment Proof", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        }
     }
 
 
@@ -114,6 +150,8 @@ class TransactionDetailActivity : AppCompatActivity() {
                         binding?.status?.text = "Status: Paid"
                         binding?.status?.setTextColor(ContextCompat.getColor(this, android.R.color.holo_green_dark))
                         binding?.acc?.visibility = View.GONE
+                        binding?.decline?.visibility = View.GONE
+                        binding?.textView11?.visibility = View.VISIBLE
                     } else {
                         Toast.makeText(this, "Failure Acc Payment Proof", Toast.LENGTH_SHORT).show()
                     }
@@ -123,14 +161,20 @@ class TransactionDetailActivity : AppCompatActivity() {
 
     private fun checkRole() {
         val uid = FirebaseAuth.getInstance().currentUser!!.uid
+
+        if(model?.customerId == uid && model?.status == "Not Paid") {
+            binding?.imageHint?.visibility = View.VISIBLE
+        }
+
         FirebaseFirestore
             .getInstance()
             .collection("users")
             .document(uid)
             .get()
             .addOnSuccessListener {
-                if("" + it.data?.get("role") == "admin") {
+                if("" + it.data?.get("role") == "admin" && model?.status == "Not Paid") {
                     binding?.acc?.visibility = View.VISIBLE
+                    binding?.decline?.visibility = View.VISIBLE
                 }
             }
     }

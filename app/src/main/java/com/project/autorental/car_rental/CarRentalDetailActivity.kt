@@ -3,6 +3,7 @@ package com.project.autorental.car_rental
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -33,7 +34,6 @@ class CarRentalDetailActivity : AppCompatActivity() {
     private var binding: ActivityCarRentalBinding? = null
     private var model: CarRentalModel? = null
     private var getCustomerName: String? = null
-    private var getCustomerNIK: String? = null
     private var pickHour: String? = null
     private var counter = 0
     val user = FirebaseAuth.getInstance().currentUser
@@ -57,7 +57,7 @@ class CarRentalDetailActivity : AppCompatActivity() {
         binding?.type?.text = "Type: ${model?.type}"
         binding?.description?.text = model?.description
         binding?.facility?.text = model?.facility
-        binding?.price?.text = "Rp. ${formatter.format(model?.price)}"
+        binding?.price?.text = "RM ${formatter.format(model?.price)}"
 
         binding?.backButton?.setOnClickListener {
             onBackPressed()
@@ -73,7 +73,9 @@ class CarRentalDetailActivity : AppCompatActivity() {
         }
 
         binding?.edit?.setOnClickListener {
-
+            val intent = Intent(this, CarRentalEditActivity::class.java)
+            intent.putExtra(CarRentalEditActivity.EXTRA_CAR, model)
+            startActivity(intent)
         }
     }
 
@@ -174,8 +176,7 @@ class CarRentalDetailActivity : AppCompatActivity() {
                                 /// pengecekan pada transaksi, apakah barang yang dipilih sedang di sewa oleh orang lain atau tidak, jika disewa, maka pengguna saat ini tidak bisa menyewa
                                 for (document in task.result) {
                                     try {
-                                        val listName =
-                                            document["name"] as ArrayList<*>
+                                        val carName = "" + document["carName"]
                                         val dateStart: Date =
                                             sdf.parse("" + document["dateStart"])
                                         val dateFinish: Date =
@@ -208,9 +209,7 @@ class CarRentalDetailActivity : AppCompatActivity() {
                                                 )
                                             }
                                         } else {
-                                            for (i in 0 until listName.size) {
-                                                if (model!!.name == listName[i]
-                                                ) {
+                                                if (model!!.name == carName) {
                                                     counter = 0
                                                     mProgressDialog.dismiss()
                                                     Toast.makeText(
@@ -220,7 +219,7 @@ class CarRentalDetailActivity : AppCompatActivity() {
                                                     ).show()
                                                     return@addOnCompleteListener
                                                 }
-                                            }
+
                                             counter++
                                             if (counter == size.size()) {
                                                 counter = 0
@@ -275,7 +274,7 @@ class CarRentalDetailActivity : AppCompatActivity() {
                 saveProductToDatabase(
                     formatFirst,
                     formatSecond,
-                    diffDays,
+                    diffDays.toInt(),
                     pickHour
                 )
             }
@@ -288,7 +287,7 @@ class CarRentalDetailActivity : AppCompatActivity() {
     private fun saveProductToDatabase(
         first: String,
         second: String,
-        difference: Long,
+        difference: Int,
         pickHour: String
     ) {
         val mProgressDialog = ProgressDialog(this)
@@ -301,7 +300,6 @@ class CarRentalDetailActivity : AppCompatActivity() {
         val transaction: MutableMap<String, Any?> = HashMap()
         transaction["customerId"] = user?.uid
         transaction["customerName"] = getCustomerName
-        transaction["customerNIK"] = getCustomerNIK
         transaction["finalPrice"] = model!!.price?.times(difference)
         transaction["dateFinish"] = second
         transaction["dateStart"] = first
@@ -312,7 +310,11 @@ class CarRentalDetailActivity : AppCompatActivity() {
         transaction["carName"] = model?.name
         transaction["carType"] = model?.type
         transaction["carImage"] = model?.image
-        transaction["duration"] = "$difference Hari"
+        if(difference == 1) {
+            transaction["duration"] = "$difference Day"
+        } else {
+            transaction["duration"] = "$difference Days"
+        }
         transaction["paymentProof"] = ""
 
 
@@ -414,7 +416,6 @@ class CarRentalDetailActivity : AppCompatActivity() {
                 .get()
                 .addOnSuccessListener { documentSnapshot ->
                     getCustomerName = "" + documentSnapshot["name"]
-                    getCustomerNIK = "" + documentSnapshot["nik"]
                     if ("" + documentSnapshot["role"] == "admin") {
                         binding!!.edit.visibility = View.VISIBLE
                         binding!!.delete.visibility = View.VISIBLE

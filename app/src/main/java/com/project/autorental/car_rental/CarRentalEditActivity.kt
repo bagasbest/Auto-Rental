@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.project.autorental.HomeActivity
+import com.project.autorental.MainActivity
 import com.project.autorental.R
 import com.project.autorental.databinding.ActivityCarRentalEditBinding
 
@@ -165,7 +167,10 @@ class CarRentalEditActivity : AppCompatActivity() {
             .setIcon(R.drawable.ic_baseline_check_circle_outline_24)
             .setPositiveButton("OK") { dialogInterface, _ ->
                 dialogInterface.dismiss()
-                onBackPressed()
+                val intent = Intent(this, HomeActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                finish()
             }
             .show()
     }

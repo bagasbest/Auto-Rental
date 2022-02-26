@@ -38,7 +38,7 @@ class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.ViewHolder>()
                 carName.text = "Car Name: ${model.carName}"
                 customerName.text = "Cust.name: ${model.customerName}"
                 rentDate.text = "Rent Date: ${model.dateStart} - ${model.dateFinish}"
-                price.text = "Rp. ${formatter.format(model.finalPrice)}"
+                price.text = "RM ${formatter.format(model.finalPrice)}"
                 carType.text = "Car Type: ${model.carType}"
                 status.text = "Status: ${model.status}"
 

@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project.autorental.databinding.ItemCarBinding
+import com.project.autorental.transaction.TransactionDetailActivity
 import java.text.DecimalFormat
 
 
@@ -34,8 +35,15 @@ class CarRentalAdapter : RecyclerView.Adapter<CarRentalAdapter.ViewHolder>() {
 
 
                 name.text = model.name
-                price.text = "Rp. ${formatter.format(model.price)}"
+                price.text = "RM ${formatter.format(model.price)}"
                 description.text = model.description
+
+
+                cv.setOnClickListener {
+                    val intent = Intent(itemView.context, CarRentalDetailActivity::class.java)
+                    intent.putExtra(CarRentalDetailActivity.EXTRA_CAR, model)
+                    itemView.context.startActivity(intent)
+                }
             }
         }
 

@@ -7,7 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class TransactionModel(
     var transactionId: String? = null,
     var customerId: String? = null,
-    var customerNIK: String? = null,
     var customerName: String? = null,
     var finalPrice: Long? = 0L,
     var dateFinish: String? = null,

@@ -36,7 +36,6 @@ class RegisterActivity : AppCompatActivity() {
     private fun registrateUser() {
         val name = binding!!.nameEt.text.toString().trim()
         val username = binding!!.usernameEt.text.toString().trim()
-        val nik = binding!!.nikEt.text.toString().trim()
         val phone = binding!!.phoneEt.text.toString().trim()
         val address = binding!!.addressEt.text.toString().trim()
         val email = binding!!.emailEt.text.toString().trim()
@@ -56,11 +55,6 @@ class RegisterActivity : AppCompatActivity() {
             }
             username.isEmpty() -> {
                 Toast.makeText(this@RegisterActivity, "Username must be filled", Toast.LENGTH_SHORT)
-                    .show()
-                return
-            }
-            nik.isEmpty() -> {
-                Toast.makeText(this@RegisterActivity, "NIK must be filled", Toast.LENGTH_SHORT)
                     .show()
                 return
             }
@@ -90,6 +84,14 @@ class RegisterActivity : AppCompatActivity() {
                 ).show()
                 return
             }
+            password.length < 6 -> {
+                Toast.makeText(
+                    this@RegisterActivity,
+                    "Password minimum 6 characters",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return
+            }
             radioButton == null -> {
                 Toast.makeText(
                     this@RegisterActivity,
@@ -109,7 +111,6 @@ class RegisterActivity : AppCompatActivity() {
                             val register: MutableMap<String, Any> = HashMap()
                             register["name"] = name
                             register["username"] = username
-                            register["nik"] = nik
                             register["phone"] = phone
                             register["address"] = address
                             register["email"] = email

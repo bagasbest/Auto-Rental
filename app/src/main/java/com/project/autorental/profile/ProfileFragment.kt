@@ -1,5 +1,7 @@
 package com.project.autorental.profile
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +15,8 @@ import com.bumptech.glide.request.target.Target
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.project.autorental.MainActivity
+import com.project.autorental.R
 import com.project.autorental.databinding.FragmentProfileBinding
 
 
@@ -36,6 +40,32 @@ class ProfileFragment : Fragment() {
         fetchUserData()
 
         return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.logout?.setOnClickListener {
+            AlertDialog.Builder(activity)
+                .setTitle("Confirm Logout")
+                .setMessage("Are you sure want to logout ?")
+                .setIcon(R.drawable.ic_baseline_warning_24)
+                .setPositiveButton("YES") { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                    logout()
+                }
+                .setNegativeButton("NO") { dialog, _ -> dialog.dismiss() }
+                .show()
+        }
+    }
+
+    private fun logout() {
+        FirebaseAuth.getInstance().signOut()
+
+        // go to login activity
+        val intent = Intent(activity, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        activity?.finish()
     }
 
     private fun fetchUserData() {
@@ -63,7 +93,7 @@ class ProfileFragment : Fragment() {
                 binding!!.addressEt.setText(address)
                 binding!!.usernameEt.setText(username)
 
-                if (gender == "Laki-laki") {
+                if (gender == "Male") {
                     binding!!.male.isChecked = true
                 } else {
                     binding!!.female.isChecked = true
@@ -71,7 +101,7 @@ class ProfileFragment : Fragment() {
             }
             .addOnFailureListener { e: Exception ->
                 Log.e("Error get profil", e.toString())
-                Toast.makeText(activity, "Gagal mengambil data pengguna", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Error get data user", Toast.LENGTH_SHORT).show()
             }
     }
 

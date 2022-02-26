@@ -26,6 +26,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/white" />
 
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/acc"
             android:layout_width="wrap_content"
@@ -34,6 +35,20 @@
             android:backgroundTint="@color/blue"
             android:contentDescription="@string/image"
             android:src="@drawable/ic_baseline_check_circle_outline_24"
+            android:visibility="gone"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/decline"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/decline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/blue"
+            android:contentDescription="@string/image"
+            android:src="@drawable/ic_baseline_clear_24"
             android:visibility="gone"
             android:layout_marginEnd="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,6 +75,7 @@
             android:layout_height="150dp"
             app:riv_corner_radius="10dp"
             android:layout_marginTop="50dp"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView23" />
@@ -118,20 +134,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view" />
 
-        <TextView
-            android:id="@+id/customerNik"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16sp"
-            android:layout_marginEnd="16sp"
-            android:layout_marginTop="5dp"
-            android:text="Customer NIK: "
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/customerName" />
-
 
         <View
             android:id="@+id/view2"
@@ -141,7 +143,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/customerNik" />
+            app:layout_constraintTop_toBottomOf="@+id/customerName" />
 
         <TextView
             android:id="@+id/dateStart"
@@ -244,15 +246,30 @@
             app:layout_constraintTop_toBottomOf="@+id/status" />
 
 
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16sp"
+            android:visibility="gone"
+            android:text="Your number will be contacted by the admin in a short time, thank you for using our rental service."
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/view4"
+            app:layout_constraintStart_toStartOf="@+id/view4"
+            app:layout_constraintTop_toBottomOf="@+id/finalPrice" />
+
+
         <View
             android:id="@+id/view4"
             android:layout_width="match_parent"
-            android:layout_marginTop="16sp"
             android:layout_height="10dp"
+            android:layout_marginTop="16sp"
             android:background="#E1E1E1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/finalPrice" />
+            app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
 
         <TextView
